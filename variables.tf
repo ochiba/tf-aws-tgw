@@ -17,6 +17,14 @@ variable "region" {
   }
 }
 
+variable "system_cidrs" {
+  default = [
+    "172.16.0.0/16",
+    "172.17.0.0/16",
+    "172.18.0.0/16"
+  ]
+}
+
 variable "heimdallr" {
   default = {
     system = {
