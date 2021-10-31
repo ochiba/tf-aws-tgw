@@ -7,3 +7,7 @@ output "subnet_ids" {
 output "route_table_ids" {
   value = module.hub_network.route_table_ids
 }
+
+output "hdr_ec2_ip" {
+  value = module.hub_demo_ec2.private_ip
+}

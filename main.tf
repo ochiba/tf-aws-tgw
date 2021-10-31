@@ -32,3 +32,15 @@ module "hub_network_tgw" {
   tgw_ram_name        = module.transit_gateway.tgw_ram_name
   tgw_route_table_ids = module.transit_gateway.tgw_route_table_ids
 }
+
+module "hub_demo_ec2" {
+  source = "./modules/demo_ec2"
+  providers = {
+    aws = aws
+  }
+
+  stack_prefix = local.hdr_prefix
+  region       = var.region
+  vpc          = var.heimdallr.vpc
+  subnet_ids   = module.hub_network.subnet_ids
+}
