@@ -21,7 +21,7 @@ resource "aws_ram_resource_share" "tgw" {
 resource "aws_ec2_transit_gateway_route_table" "hub" {
   transit_gateway_id = aws_ec2_transit_gateway.main.id
 
-  tags = { Name = "${var.stack_prefix}-tgw_rtb-hub" }
+  tags = { Name = "${var.stack_prefix}-tgw_rtbl-hub" }
   depends_on = [
     aws_ec2_transit_gateway.main
   ]
@@ -30,7 +30,7 @@ resource "aws_ec2_transit_gateway_route_table" "hub" {
 resource "aws_ec2_transit_gateway_route_table" "spoke" {
   transit_gateway_id = aws_ec2_transit_gateway.main.id
 
-  tags = { Name = "${var.stack_prefix}-tgw_rtb-spoke" }
+  tags = { Name = "${var.stack_prefix}-tgw_rtbl-spoke" }
   depends_on = [
     aws_ec2_transit_gateway.main
   ]
