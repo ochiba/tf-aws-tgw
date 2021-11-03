@@ -17,6 +17,11 @@ resource "aws_ram_resource_share" "tgw" {
   tags = { Name = "${var.stack_prefix}-ram-tgw" }
 }
 
+resource "aws_ram_resource_association" "tgw" {
+  resource_arn       = aws_ec2_transit_gateway.main.arn
+  resource_share_arn = aws_ram_resource_share.tgw.arn
+}
+
 # Create Route Table for Transit Gateway
 resource "aws_ec2_transit_gateway_route_table" "hub" {
   transit_gateway_id = aws_ec2_transit_gateway.main.id
