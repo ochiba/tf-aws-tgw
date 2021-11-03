@@ -11,6 +11,9 @@ variable "subnet_private" {
 variable "subnet_edge" {
   default = []
 }
+variable "is_hub" {
+  default = false
+}
 variable "tgw_id" {}
 variable "tgw_ram_name" {}
 variable "tgw_route_table_ids" {}

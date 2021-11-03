@@ -1,7 +1,7 @@
 # Transit Gatewayの共有（Cross Accountでのみ必要）
 # Transit Gateway用RAMをTarget Accountに紐付けてTarget Accountで受諾する。
 data "aws_ram_resource_share" "tgw" {
-  count    = local.is_hub ? 0 : 1
+  count    = var.is_hub ? 0 : 1
   provider = aws.hub
 
   name           = var.tgw_ram_name
@@ -9,7 +9,7 @@ data "aws_ram_resource_share" "tgw" {
 }
 
 resource "aws_ram_principal_association" "tgw" {
-  count    = local.is_hub ? 0 : 1
+  count    = var.is_hub ? 0 : 1
   provider = aws.hub
 
   principal          = data.aws_caller_identity.default.account_id
@@ -17,7 +17,7 @@ resource "aws_ram_principal_association" "tgw" {
 }
 
 resource "aws_ram_resource_share_accepter" "tgw" {
-  count = local.is_hub ? 0 : 1
+  count = var.is_hub ? 0 : 1
 
   share_arn = aws_ram_principal_association.tgw[0].resource_share_arn
 }
@@ -46,7 +46,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "main" {
 }
 
 resource "aws_ec2_transit_gateway_vpc_attachment_accepter" "main" {
-  count    = local.is_hub ? 0 : 1
+  count    = var.is_hub ? 0 : 1
   provider = aws.hub
 
   transit_gateway_attachment_id                   = aws_ec2_transit_gateway_vpc_attachment.main.id
@@ -71,7 +71,7 @@ resource "aws_ec2_transit_gateway_route_table_association" "main" {
   provider = aws.hub
 
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.main.id
-  transit_gateway_route_table_id = local.is_hub ? var.tgw_route_table_ids.hub : var.tgw_route_table_ids.spoke
+  transit_gateway_route_table_id = var.is_hub ? var.tgw_route_table_ids.hub : var.tgw_route_table_ids.spoke
 
   depends_on = [
     time_sleep.wait_for_tgw_attachment
@@ -93,7 +93,7 @@ data "aws_ec2_transit_gateway_route_table" "spoke" {
 
 # RouteTable@Hub: Target VPC -> Spoke attachment
 resource "aws_ec2_transit_gateway_route" "vpc_to_hub_attachment" {
-  count    = local.is_hub ? 0 : 1
+  count    = var.is_hub ? 0 : 1
   provider = aws.hub
 
   transit_gateway_route_table_id = data.aws_ec2_transit_gateway_route_table.hub.id
@@ -107,7 +107,7 @@ resource "aws_ec2_transit_gateway_route" "vpc_to_hub_attachment" {
 
 # RouteTable@Spoke: Target VPC -> Hub attachment
 resource "aws_ec2_transit_gateway_route" "vpc_to_spoke_attachment" {
-  count    = local.is_hub ? 1 : 0
+  count    = var.is_hub ? 1 : 0
   provider = aws.hub
 
   transit_gateway_route_table_id = data.aws_ec2_transit_gateway_route_table.spoke.id

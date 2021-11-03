@@ -18,9 +18,14 @@ module "hub_network" {
   subnet_public       = var.heimdallr.subnets.public
   subnet_private      = var.heimdallr.subnets.private
   subnet_edge         = var.heimdallr.subnets.edge
+  is_hub              = true
   tgw_id              = module.transit_gateway.tgw_id
   tgw_ram_name        = module.transit_gateway.tgw_ram_name
   tgw_route_table_ids = module.transit_gateway.tgw_route_table_ids
+
+  depends_on = [
+    module.transit_gateway
+  ]
 }
 
 module "hub_demo_ec2" {
