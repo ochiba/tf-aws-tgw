@@ -19,3 +19,16 @@ provider "aws" {
 }
 
 data "aws_caller_identity" "default" {}
+
+# System-A
+provider "aws" {
+  alias   = "spoke1"
+  region  = var.region.name
+  profile = "trista"
+
+  default_tags {
+    tags = local.trs_tags
+  }
+}
+
+data "aws_caller_identity" "spoke_1" { provider = aws.spoke1 }

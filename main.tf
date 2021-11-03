@@ -39,3 +39,26 @@ module "hub_demo_ec2" {
   vpc          = var.heimdallr.vpc
   subnet_ids   = module.hub_network.subnet_ids
 }
+
+module "spoke1_network" {
+  source = "./modules/network"
+  providers = {
+    aws     = aws.spoke1
+    aws.hub = aws
+  }
+
+  stack_prefix        = local.hdr_prefix
+  region              = var.region
+  system_cidrs        = var.system_cidrs
+  vpc                 = var.trista.vpc
+  subnet_public       = var.trista.subnets.public
+  subnet_private      = var.trista.subnets.private
+  subnet_edge         = var.trista.subnets.edge
+  tgw_id              = module.transit_gateway.tgw_id
+  tgw_ram_name        = module.transit_gateway.tgw_ram_name
+  tgw_route_table_ids = module.transit_gateway.tgw_route_table_ids
+
+  depends_on = [
+    module.transit_gateway
+  ]
+}

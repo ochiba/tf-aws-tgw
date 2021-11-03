@@ -51,3 +51,30 @@ variable "heimdallr" {
     }
   }
 }
+
+variable "trista" {
+  default = {
+    system = {
+      id   = "trs"
+      name = "trista"
+    }
+    vpc = {
+      id   = "vpc-0120ae4a22ce030eb"
+      cidr = "172.17.0.0/16"
+    }
+    subnets = {
+      public = [
+        { az = "a", cidr = "172.17.0.0/24" },
+        { az = "c", cidr = "172.17.8.0/24" }
+      ]
+      private = [
+        { az = "a", cidr = "172.17.16.0/24" },
+        { az = "c", cidr = "172.17.32.0/24" }
+      ]
+      edge = [
+        { az = "a", cidr = "172.17.255.0/25" },
+        { az = "c", cidr = "172.17.255.128/25" }
+      ]
+    }
+  }
+}
