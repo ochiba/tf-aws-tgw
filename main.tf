@@ -62,3 +62,15 @@ module "spoke1_network" {
     module.transit_gateway
   ]
 }
+
+module "spoke1_demo_ec2" {
+  source = "./modules/demo_ec2"
+  providers = {
+    aws = aws.spoke1
+  }
+
+  stack_prefix = local.hdr_prefix
+  region       = var.region
+  vpc          = var.trista.vpc
+  subnet_ids   = module.spoke1_network.subnet_ids
+}
