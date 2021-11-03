@@ -3,7 +3,7 @@ resource "aws_route_table" "public" {
   vpc_id = data.aws_vpc.main.id
 
   tags = {
-    Name = "${var.stack_prefix}-rtb-public"
+    Name = "${var.stack_prefix}-rtbl-public"
     Tier = "Public"
   }
 }
@@ -27,13 +27,20 @@ resource "aws_route_table_association" "public" {
 }
 
 # Private subnet
-resource "aws_route_table" "private" {
-  count = 2
-
+resource "aws_route_table" "private_a" {
   vpc_id = data.aws_vpc.main.id
 
   tags = {
-    Name = "${var.stack_prefix}-rtb-private_${var.subnet_private[count.index].az}"
+    Name = "${var.stack_prefix}-rtbl-private_a"
+    Tier = "Private"
+  }
+}
+
+resource "aws_route_table" "private_c" {
+  vpc_id = data.aws_vpc.main.id
+
+  tags = {
+    Name = "${var.stack_prefix}-rtbl-private_c"
     Tier = "Private"
   }
 }
@@ -42,11 +49,12 @@ resource "aws_route_table_association" "private" {
   count = length(aws_subnet.private)
 
   subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private[count.index % 2].id
+  route_table_id = (count.index % 2 == 0) ? aws_route_table.private_a.id : aws_route_table.private_c.id
 
   depends_on = [
     aws_subnet.private,
-    aws_route_table.private
+    aws_route_table.private_a,
+    aws_route_table.private_c
   ]
 }
 
@@ -55,7 +63,7 @@ resource "aws_route_table" "edge" {
   vpc_id = data.aws_vpc.main.id
 
   tags = {
-    Name = "${var.stack_prefix}-rtb-edge"
+    Name = "${var.stack_prefix}-rtbl-edge"
     Tier = "Edge"
   }
 }

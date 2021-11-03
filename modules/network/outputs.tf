@@ -10,10 +10,11 @@ output "subnet_ids" {
   }
 }
 
-output "route_table_ids" {
+output "route_table_id" {
   value = {
-    public  = [aws_route_table.public.id]
-    private = [for x in aws_route_table.private : x.id]
-    edge    = [aws_route_table.edge.id]
+    public    = aws_route_table.public.id
+    private_a = aws_route_table.private_a.id
+    private_c = aws_route_table.private_c.id
+    edge      = aws_route_table.edge.id
   }
 }

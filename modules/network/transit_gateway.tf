@@ -33,13 +33,14 @@ data "aws_ec2_transit_gateway" "main" {
 resource "aws_ec2_transit_gateway_vpc_attachment" "main" {
   transit_gateway_id                              = data.aws_ec2_transit_gateway.main.id
   vpc_id                                          = var.vpc.id
-  subnet_ids                                      = var.subnet_ids.edge
+  subnet_ids                                      = [for x in aws_subnet.edge : x.id]
   transit_gateway_default_route_table_association = false
   transit_gateway_default_route_table_propagation = false
   dns_support                                     = "disable"
 
   tags = { Name = "${var.stack_prefix}-tgw_attach" }
   depends_on = [
+    aws_subnet.edge,
     aws_ram_resource_share_accepter.tgw
   ]
 }
