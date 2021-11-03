@@ -1,9 +1,0 @@
-variable "stack_prefix" {}
-variable "region" {}
-variable "system_cidrs" {}
-variable "vpc" {}
-variable "subnet_ids" {}
-variable "route_table_ids" {}
-variable "tgw_id" {}
-variable "tgw_ram_name" {}
-variable "tgw_route_table_ids" {}
