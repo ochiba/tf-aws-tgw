@@ -12,4 +12,11 @@ locals {
     System = var.trista.system.name
     Stack  = local.trs_prefix
   }
+
+  lvs_prefix = "${var.leeves.system.id}-${var.env.id}"
+  lvs_tags = {
+    Env    = var.env.name
+    System = var.leeves.system.name
+    Stack  = local.lvs_prefix
+  }
 }

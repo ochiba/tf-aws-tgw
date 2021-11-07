@@ -17,3 +17,13 @@ output "trs_route_table_id" {
 output "trs_ec2_ip" {
   value = module.spoke1_demo_ec2.private_ip
 }
+
+output "lvs_subnet_ids" {
+  value = module.spoke2_network.subnet_ids
+}
+output "lvs_route_table_id" {
+  value = module.spoke2_network.route_table_id
+}
+output "lvs_ec2_ip" {
+  value = module.spoke2_demo_ec2.private_ip
+}

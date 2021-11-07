@@ -78,3 +78,30 @@ variable "trista" {
     }
   }
 }
+
+variable "leeves" {
+  default = {
+    system = {
+      id   = "lvs"
+      name = "leeves"
+    }
+    vpc = {
+      id   = "vpc-09d6d29d89b5a6c60"
+      cidr = "172.18.0.0/16"
+    }
+    subnets = {
+      public = [
+        { az = "a", cidr = "172.18.0.0/24" },
+        { az = "c", cidr = "172.18.8.0/24" }
+      ]
+      private = [
+        { az = "a", cidr = "172.18.16.0/24" },
+        { az = "c", cidr = "172.18.32.0/24" }
+      ]
+      edge = [
+        { az = "a", cidr = "172.18.255.0/25" },
+        { az = "c", cidr = "172.18.255.128/25" }
+      ]
+    }
+  }
+}
